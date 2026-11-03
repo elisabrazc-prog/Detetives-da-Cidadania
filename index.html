@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,800;1,600&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<title>Detetives da Cidadania</title>
+<style>
+:root{--bg1:#0f5132;--fg1:#fff;--accent:#ffd54a;--accent-fg:#1b1b1b;--bg2:#fff8e6;--fg2:#1d2b22;--card:#fff;--border:#e2d6b5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#0a3322;--bg2:#16201a;--fg2:#f1ede0;--card:#1f2c24;--border:#34463a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg1:#0a3322;--bg2:#16201a;--fg2:#f1ede0;--card:#1f2c24;--border:#34463a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;height:100%;font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;background:var(--bg1);color:var(--fg1);overflow:hidden}
+.stage{position:relative;width:100%;height:100%;min-height:100vh}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+#s1{--bw:clamp(200px,min(58vw,56vh),440px);z-index:1;background:radial-gradient(ellipse at center,#fffaf0 0%,#fbf3dc 55%,#f1e4bd 100%);color:#0f5132;padding-top:0;padding-bottom:0;justify-content:flex-start;overflow:hidden}
+.frame{position:absolute;inset:14px;border:3px solid #0f5132;border-radius:22px;box-shadow:inset 0 0 0 7px #fbf3dc,inset 0 0 0 9px #c9a227;pointer-events:none}
+.deco{position:absolute;width:clamp(100px,22vw,200px);height:auto;pointer-events:none}
+.tl{top:20px;left:20px}
+.tr{top:20px;right:20px;transform:scaleX(-1)}
+.bl{bottom:20px;left:20px;transform:scaleY(-1)}
+.br{bottom:20px;right:20px;transform:scale(-1,-1)}
+#s1 .books{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:var(--bw);height:auto}
+#s1 .inside{position:relative;z-index:2;flex:1;width:100%;display:grid;grid-template-rows:.7fr auto 1.3fr;justify-items:center}
+#s1 #go{grid-row:3;align-self:center;margin-bottom:calc(var(--bw)*.62 + 26px)}
+#s1 h1{grid-row:2}
+#s1 .lens{position:absolute;left:calc(100% - 1.6em);top:-.2em;width:2.6em;height:2.8em;overflow:visible;pointer-events:none}
+#s1 .kicker{font-family:"Lora",Georgia,serif;font-weight:600;letter-spacing:.28em;text-transform:uppercase;font-size:clamp(12px,2.4vw,15px);color:#8a6a00;margin-top:6px}
+#s1 h1{position:relative;display:block;width:fit-content;margin:0 auto;font-size:clamp(40px,min(11vw,12vh),104px);line-height:1;font-family:"Playfair Display",Georgia,"Times New Roman",serif}
+#s1 h1 .t1{display:block;font-weight:800;font-size:1em;color:#0f5132;text-shadow:3px 3px 0 #e6c65a,5px 5px 0 rgba(15,81,50,.18)}
+#s1 h1 .t2{display:block;font-style:italic;font-weight:600;font-size:.62em;color:#8a6a00;margin-top:2px}
+#s1 .orn{font-size:26px;color:#c9a227;margin:6px 0 20px}
+#s1 #go{background:#0f5132;color:#fff;font-family:"Lora",Georgia,serif}
+#go{font:inherit;font-weight:700;font-size:18px;padding:14px 32px;border:0;border-radius:999px;background:var(--accent);color:var(--accent-fg);cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.25);transition:transform .15s}
+#go:hover{transform:translateY(-2px)}#go:active{transform:translateY(3px)}
+#s2{background:var(--bg2);color:var(--fg2);clip-path:circle(0 at 50% 50%);visibility:hidden;transition:clip-path .9s cubic-bezier(.7,0,.2,1)}
+#s2.open{visibility:visible;clip-path:circle(150% at 50% 50%)}
+#s2 .inner{width:100%;max-width:720px;overflow-y:auto;max-height:100%;padding:8px}
+.tag{display:inline-block;background:var(--bg1);color:var(--fg1);padding:6px 16px;border-radius:999px;font-size:14px;letter-spacing:.1em;text-transform:uppercase}
+#s2 h2{font-size:clamp(30px,6vw,48px);margin:14px 0 10px}
+.desc{font-size:clamp(16px,2.6vw,20px);line-height:1.55;margin:0 0 24px}
+.opts{display:grid;gap:12px}
+.opt{font:inherit;font-size:clamp(16px,2.4vw,19px);text-align:left;padding:16px 18px;border-radius:14px;border:2px solid var(--border);background:var(--card);color:var(--fg2);cursor:pointer;display:flex;gap:14px;align-items:center;transition:transform .15s,border-color .15s}
+.opt:hover:not(:disabled){transform:translateY(-2px);border-color:var(--bg1)}
+.opt .n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--bg1);color:var(--fg1);display:grid;place-items:center;font-weight:700}
+.opt.bad{border-color:#b3261e;opacity:.55}
+.opt:disabled{cursor:default}
+#res{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:24px;visibility:hidden;clip-path:circle(0 at 50% 50%);transition:clip-path .8s cubic-bezier(.7,0,.2,1);overflow:hidden}
+#res.open{visibility:visible;clip-path:circle(150% at 50% 50%)}
+#res.good{background:linear-gradient(160deg,#b9e6a6 0%,#93d393 50%,#72c48f 100%);color:#10372a}
+#res.wrong{background:linear-gradient(160deg,#ef5b4f 0%,#e03a3a 55%,#c92d33 100%);color:#3a100c}
+.rcard{position:relative;z-index:2;width:100%;max-width:640px;max-height:100%;overflow-y:auto;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(8px);border-radius:28px;padding:32px 26px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);transform:scale(.9);opacity:0;transition:transform .5s .5s,opacity .5s .5s}
+#res.open .rcard{transform:none;opacity:1}
+.rcard .big{font-size:72px;line-height:1}
+.rcard h3{font-size:clamp(28px,6vw,44px);margin:12px 0 6px}
+.rcard .sub{font-size:15px;letter-spacing:.1em;text-transform:uppercase;opacity:.9;margin:0 0 18px}
+.rcard p.why{font-size:clamp(17px,2.6vw,21px);line-height:1.6;margin:0 0 24px}
+.rcard button{font:inherit;font-weight:700;font-size:17px;padding:13px 30px;border:0;border-radius:999px;background:#ffd54a;color:#1b1b1b;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.25)}
+.rcard button:active{transform:translateY(3px)}
+.cf{position:absolute;top:-40px;font-size:26px;z-index:1;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+#s2{z-index:2;background:radial-gradient(ellipse at center,#fffaf0 0%,#fbf3dc 55%,#f1e4bd 100%);color:#1d2b22;padding:48px 36px}
+#s2 .inner{position:relative;z-index:2}
+#s2 .deco{width:clamp(56px,11vw,110px)}
+#s2 .tag{background:#0f5132;color:#fff;font-family:"Lora",Georgia,serif;font-weight:600}
+#s2 h2{font-family:"Playfair Display",Georgia,serif;font-weight:800;color:#0f5132;text-shadow:2px 2px 0 #e6c65a}
+#s2 .desc{font-family:"Lora",Georgia,serif;font-weight:500}
+#s2 .opt{background:#fffaf0;color:#1d2b22;border-color:#e2d6b5;font-family:"Lora",Georgia,serif;font-weight:600}
+#s2 .opt:hover:not(:disabled){border-color:#0f5132}
+#s2 .opt.bad{border-color:#b3261e;opacity:.55}
+#s2 .opt .n{background:#0f5132;color:#fff;font-family:"Playfair Display",Georgia,serif}
+#res .frame{border:2px solid rgba(255,255,255,.85);box-shadow:inset 0 0 0 6px transparent,inset 0 0 0 7.5px rgba(255,255,255,.45)}
+.rcard h3{font-family:"Playfair Display",Georgia,serif;font-weight:800}
+.rcard .sub,.rcard p.why,.rcard button{font-family:"Lora",Georgia,serif}
+@media (prefers-reduced-motion:reduce){#s2,#res,.rcard{transition:none}.cf{display:none}}
+.tw{transform-box:fill-box;transform-origin:center;animation:tw 2.4s ease-in-out infinite}
+@keyframes tw{0%,100%{transform:scale(.4);opacity:.3}50%{transform:scale(1.1);opacity:1}}
+.rs{animation:rs 4s ease-in infinite}
+@keyframes rs{0%{transform:translateY(20px);opacity:0}20%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+.gl{transform-box:fill-box;transform-origin:center;animation:gl 3.5s ease-in-out infinite}
+@keyframes gl{0%,100%{opacity:.7;transform:scale(.95)}50%{opacity:1;transform:scale(1.06)}}
+#s1 .ch{display:inline-block}
+@keyframes drop{from{transform:translateY(-60px) rotate(-12deg);opacity:0}}
+@keyframes wave{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.fl{position:absolute;z-index:1;font-size:clamp(22px,4vw,34px);pointer-events:none;animation:flt 6s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+#s1 #go{animation:pulse 1.8s ease-in-out infinite}
+#s1 #go:hover{animation-play-state:paused}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+
+#s2 .opts .opt:nth-child(1) .n{background:#e8742a}
+#s2 .opts .opt:nth-child(2) .n{background:#1f8a8a}
+#s2 .opt:hover:not(:disabled){transform:translateY(-3px) rotate(-1deg) scale(1.02)}
+#s2 .inner.pop{animation:pop .5s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{transform:scale(.9) translateY(16px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.tw,.gl,.ch,.fl,#s1 #go,.inner.pop{animation:none!important}.rs{display:none}}
+.cf svg{display:block}
+.det{display:block;margin:0 auto 4px;width:clamp(84px,13vh,124px);height:auto}
+#res .deco{display:none;width:clamp(70px,16vw,150px)}
+#res.final{background:radial-gradient(ellipse at center,#fffaf0 0%,#fbf3dc 55%,#f1e4bd 100%);color:#1d2b22}
+#res.final .deco{display:block}
+#res.final .frame{border-color:#0f5132;box-shadow:inset 0 0 0 7px #fbf3dc,inset 0 0 0 9px #c9a227}
+#res.final .rcard{background:transparent;border:0;box-shadow:none;backdrop-filter:none}
+#res.final .det{width:clamp(300px,68vw,620px);margin:0 auto 6px}
+#res.final h3{font-size:clamp(40px,10vw,84px);line-height:1.05;text-shadow:3px 3px 0 #e6c65a,5px 5px 0 rgba(15,81,50,.18)}
+#res.final .sub{color:#8a6a00;font-weight:600}
+#res.final button{background:#0f5132;color:#fff}
+#res.good .rcard{background:rgba(255,255,255,.5);border-color:rgba(255,255,255,.9)}
+#res.good button{background:#f9b233}
+#s2{--dh:clamp(110px,18vh,150px)}
+#s2 h2{position:relative;display:inline-block;margin:calc(var(--dh) - 40px) 0 10px}
+#s2 .det{position:absolute;right:calc(100% + 8px);bottom:-6px;height:var(--dh);width:auto;aspect-ratio:240/340;margin:0}
+@media (max-width:560px){#s2{--dh:88px}#s2 h2{font-size:30px}}
+#s2 h2,#s2 .opt .n{font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}
+.tro{display:block;margin:0 auto;width:clamp(90px,16vw,128px);height:auto;animation:trin .7s cubic-bezier(.3,1.6,.5,1) .5s both}
+@keyframes trin{from{transform:scale(.3) rotate(-10deg);opacity:0}}
+#s2 h2{margin:14px 0 10px}
+@media (prefers-reduced-motion:reduce){.tro{animation:none}}
+#res.wrong .rcard{background:rgba(255,255,255,.42);border-color:rgba(255,255,255,.9)}
+#res.wrong button{background:#f9b233}
+.emo{display:block;margin:0 auto;width:clamp(130px,28vw,200px);height:auto;animation:trin .6s cubic-bezier(.3,1.6,.5,1) .4s both}
+@media (prefers-reduced-motion:reduce){.emo{animation:none}}
+#res.final h3{margin-bottom:0}
+#res.final .sub{margin:22px 0}
+#res.final .big{font-size:clamp(80px,16vw,110px);line-height:1.1}
+.ico{display:inline-block;margin:0}
+.ico.bk{font-size:.58em;margin-right:-.04em;transform:translateY(.28em) rotate(-16deg)}
+.pil{position:absolute;top:34px;left:50%;transform:translateX(-50%);z-index:2;display:flex;gap:clamp(8px,2.2vw,26px)}
+.pl{display:flex;flex-direction:column;align-items:center;gap:3px;font-family:"Lora",Georgia,serif}
+.pl b{font-size:clamp(9px,1.4vw,12px);color:#0f5132;letter-spacing:.04em;text-align:center}
+.pc{display:grid;place-items:center;width:clamp(34px,5vw,48px);height:clamp(34px,5vw,48px);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffdf0,#fbe9b0);border:3px solid #c9a227;box-shadow:0 3px 0 rgba(15,81,50,.2);font-size:clamp(17px,2.6vw,24px)}
+.trail{position:absolute;bottom:20px;left:calc(50% - var(--bw)*1.65);width:calc(var(--bw)*1.25);height:auto;pointer-events:none}
+@media(max-width:700px){.trail{display:none}}
+.lv{position:absolute;top:-30px;width:18px;height:12px;z-index:1;pointer-events:none;opacity:.5;animation:lvf linear infinite}
+@keyframes lvf{to{transform:translateY(105vh) translateX(30px) rotate(300deg)}}
+.ff{position:absolute;bottom:calc(var(--bw)*.2);width:7px;height:7px;border-radius:50%;background:#ffd54a;box-shadow:0 0 8px 3px rgba(255,213,74,.7);animation:ffu 6s ease-in infinite;opacity:0;pointer-events:none}
+@keyframes ffu{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(calc(var(--bw)*-.55)) translateX(14px);opacity:0}}
+#s2 .inner{background:linear-gradient(#fffdf6,#fbf1d6);border:2px solid #e2cf9d;border-radius:14px;box-shadow:0 8px 24px rgba(90,60,20,.15);padding:34px 28px 26px}
+.clip{position:absolute;top:2px;left:30px;width:26px;height:48px}
+.stamp{position:absolute;top:16px;right:16px;transform:rotate(8deg);border:3px double #b3261e;color:#b3261e;font:700 clamp(10px,1.6vw,13px) "Lora",Georgia,serif;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:6px;opacity:.85}
+#s2 .opt{position:relative;border-radius:4px 12px 12px 12px;background:#fffdf4;border:2px solid #d9c590}
+#bgS{position:absolute;left:16px;width:calc(100% - 32px);bottom:16px;height:26%;border-radius:0 0 18px 18px;pointer-events:none;z-index:0}
+#bgS g{display:none}
+#bgS[data-t="forest"] #th-forest,#bgS[data-t="house"] #th-house,#bgS[data-t="castle"] #th-castle,#bgS[data-t="bean"] #th-bean{display:block}
+.stampR{display:none;position:absolute;top:14px;right:14px;border:4px double;padding:6px 14px;font:700 clamp(13px,2.4vw,19px) "Lora",Georgia,serif;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.4);border-radius:8px;animation:stampIn .5s cubic-bezier(.3,1.4,.5,1) 1s both}
+#res.good .stampR{display:block;color:#0f5132}
+#res.wrong .stampR{display:block;color:#8f1d18}
+@keyframes stampIn{0%{transform:scale(2.4) rotate(-12deg);opacity:0}100%{transform:scale(1) rotate(-12deg);opacity:.92}}
+.meds{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:4px 0 6px}
+#res.good .pl b,#res.wrong .pl b{color:#10372a}
+.tip{display:none;font:italic 500 15px "Lora",Georgia,serif;margin:-8px 0 20px}
+.stars{font-size:clamp(34px,7vw,52px);letter-spacing:6px;color:#d6d0bd;line-height:1;margin:2px 0 4px}
+.stars .on{color:#f5b800;text-shadow:0 2px 0 #c98a00}
+.bunt{display:none;position:absolute;top:14px;left:14px;width:calc(100% - 28px);height:64px;z-index:1;pointer-events:none}
+.fpw{display:none;position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:min(420px,70%);pointer-events:none;opacity:.5}
+#res.wrong .fpw{display:block}
+#rDip{display:none;margin:8px 0 0 10px}
+#res.final #rDip{background:#fff;color:#0f5132;border:2px solid #0f5132;box-shadow:none}
+#dip{position:absolute;inset:0;z-index:9;display:none;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at center,#fffaf0,#f1e4bd);overflow:auto}
+#dip.open{display:flex}
+.dcard{position:relative;width:100%;max-width:640px;background:linear-gradient(#fffdf6,#fbf1d6);border:8px double #c9a227;border-radius:10px;padding:56px 28px 26px;text-align:center;font-family:"Lora",Georgia,serif;color:#1d2b22;box-shadow:0 14px 40px rgba(90,60,20,.25)}
+.dseal{position:absolute;top:-34px;left:50%;transform:translateX(-50%);width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe27a,#d9992a);border:3px solid #a8650d;display:grid;place-items:center;font-size:28px}
+.dcard h2{font:800 clamp(28px,6vw,44px) "Playfair Display",Georgia,serif;margin:4px 0 12px;color:#0f5132}
+.dk{letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:#8a6a00;margin:0}
+#dname{font:inherit;font-size:20px;text-align:center;border:0;border-bottom:2px solid #c9a227;background:transparent;width:80%;padding:6px;margin:8px 0;color:#1d2b22}
+.dnm{font:italic 600 28px "Playfair Display",Georgia,serif;color:#d6456b;margin:4px 0 10px;min-height:1em}
+.dbt button{font:inherit;font-weight:700;padding:11px 24px;border:0;border-radius:999px;background:#0f5132;color:#fff;margin:6px;cursor:pointer}
+@media print{body *{visibility:hidden}#dip,#dip *{visibility:visible}#dip{position:fixed;inset:0;display:flex}#dname,.dbt{display:none}}
+@media (prefers-reduced-motion:reduce){.lv,.ff,.stampR{animation:none}.ff{display:none}}
+.rcard{overflow-x:hidden}
+</style>
+</head>
+<body>
+<div class="stage">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="think" viewBox="0 0 260 205"><defs><radialGradient id="emF" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#ffc356"/><stop offset=".7" stop-color="#f9a03a"/><stop offset="1" stop-color="#ee8820"/></radialGradient><linearGradient id="emB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fcf3dc"/><stop offset="1" stop-color="#ecd6a8"/></linearGradient></defs><g transform="translate(-16 0)"><circle cx="100" cy="116" r="78" fill="url(#emF)" stroke="#1d1a5c" stroke-width="5"/><path d="M42 98Q47 76 64 64" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/><path d="M62 92Q78 82 96 90M118 84Q134 76 150 84" stroke="#1d1a5c" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="82" cy="114" rx="9" ry="12" fill="#1d1a5c"/><ellipse cx="130" cy="110" rx="9" ry="12" fill="#1d1a5c"/><circle cx="85" cy="109" r="3" fill="#fff"/><circle cx="133" cy="105" r="3" fill="#fff"/><path d="M80 154L116 150" stroke="#1d1a5c" stroke-width="5" stroke-linecap="round"/></g><circle cx="173" cy="115" r="5.5" fill="url(#emB)" stroke="#1d1a5c" stroke-width="4"/><circle cx="180" cy="98" r="8.5" fill="url(#emB)" stroke="#1d1a5c" stroke-width="4"/><ellipse cx="208" cy="56" rx="46" ry="40" fill="url(#emB)" stroke="#1d1a5c" stroke-width="5"/><path d="M182 38Q187 30 195 27" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".9"/><path d="M195 47C195 31 221 31 221 47C221 58 208 58 208 70" fill="none" stroke="#1d1a5c" stroke-width="15" stroke-linecap="round"/><path d="M195 47C195 31 221 31 221 47C221 58 208 58 208 70" fill="none" stroke="#f59a2d" stroke-width="8.5" stroke-linecap="round"/><circle cx="208" cy="84" r="8" fill="#1d1a5c"/><circle cx="208" cy="84" r="4.8" fill="#f59a2d"/></symbol></svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="trophy" viewBox="0 0 240 260"><defs><linearGradient id="trG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe07a"/><stop offset=".5" stop-color="#f0b53a"/><stop offset="1" stop-color="#c9831a"/></linearGradient><linearGradient id="trB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6ea"/><stop offset="1" stop-color="#f4c9b8"/></linearGradient></defs><g fill="#f6c455"><path d="M34 44q14-16 28-2q-14 16-28 2z" transform="rotate(-18 48 44)"/><path d="M180 36q14-16 28-2q-14 16-28 2z" transform="rotate(16 194 36)"/><path d="M26 150q10-12 20-2q-10 12-20 2z" transform="rotate(-30 36 150)"/><path d="M196 168q12-12 24-2q-12 12-24 2z" transform="rotate(20 208 168)"/></g><g stroke="#f08a6a" stroke-width="3" stroke-linecap="round"><path d="M120 6V22M92 12L98 26M148 12L142 26M66 22L76 32M174 22L164 32"/></g><g fill="#f08a6a"><circle cx="40" cy="96" r="3.5"/><circle cx="206" cy="108" r="3.5"/><circle cx="56" cy="190" r="3"/></g><g fill="#f0b53a"><circle cx="20" cy="70" r="3"/><circle cx="220" cy="80" r="3"/><circle cx="188" cy="200" r="3.5"/></g><path d="M70 232H170L176 250H64Z" fill="#2b1d1a"/><path d="M82 214H158L166 232H74Z" fill="#3a2622"/><path d="M82 222H158" stroke="#f0b53a" stroke-width="2"/><path d="M96 200H144L152 214H88Z" fill="url(#trG)" stroke="#a8650d" stroke-width="2.5" stroke-linejoin="round"/><path d="M110 166H130L134 200H106Z" fill="url(#trG)" stroke="#a8650d" stroke-width="2.5" stroke-linejoin="round"/><ellipse cx="120" cy="184" rx="17" ry="6" fill="#f0b53a" stroke="#a8650d" stroke-width="2.5"/><g fill="none" stroke-linecap="round"><path d="M66 78C26 68 20 98 34 122C43 136 58 142 73 133" stroke="#a8650d" stroke-width="16"/><path d="M66 78C26 68 20 98 34 122C43 136 58 142 73 133" stroke="url(#trG)" stroke-width="10"/><path d="M174 78C214 68 220 98 206 122C197 136 182 142 167 133" stroke="#a8650d" stroke-width="16"/><path d="M174 78C214 68 220 98 206 122C197 136 182 142 167 133" stroke="url(#trG)" stroke-width="10"/></g><path d="M62 62H178L174 104C170 140 148 164 120 168C92 164 70 140 66 104Z" fill="url(#trB)" stroke="#a8650d" stroke-width="3" stroke-linejoin="round"/><path d="M78 80C76 104 84 134 104 150" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" opacity=".75"/><path d="M64 72Q120 86 176 72" stroke="#7a3f1a" stroke-width="3.5" fill="none"/><ellipse cx="120" cy="62" rx="58" ry="10" fill="url(#trG)" stroke="#a8650d" stroke-width="3"/><ellipse cx="120" cy="62" rx="48" ry="5.5" fill="#fff1de"/><g fill="#f0b53a" opacity=".85"><path d="M96 96l8 4-5 7z"/><path d="M142 120l7 3-4 6z"/><circle cx="130" cy="92" r="2.5"/><circle cx="108" cy="130" r="2"/></g></symbol></svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"></svg>
+  <section class="slide" id="s1">
+    <div class="frame"></div><div class="pil"><div class="pl"><span class="pc">🤝</span><b>Respeito</b></div><div class="pl"><span class="pc">⚖️</span><b>Responsabilidade</b></div><div class="pl"><span class="pc">🧩</span><b>Cooperação</b></div><div class="pl"><span class="pc">🌱</span><b>Cuidado coletivo</b></div></div><span class="lv" style="left:10%;animation-duration:18s;animation-delay:-0s"><svg viewBox="0 0 40 26"><path d="M0 13C8 0 30 0 40 13C30 26 8 26 0 13Z" fill="#6dbb9b"/></svg></span><span class="lv" style="left:25%;animation-duration:21s;animation-delay:-4s"><svg viewBox="0 0 40 26"><path d="M0 13C8 0 30 0 40 13C30 26 8 26 0 13Z" fill="#f9b233"/></svg></span><span class="lv" style="left:40%;animation-duration:24s;animation-delay:-8s"><svg viewBox="0 0 40 26"><path d="M0 13C8 0 30 0 40 13C30 26 8 26 0 13Z" fill="#8fd18f"/></svg></span><span class="lv" style="left:55%;animation-duration:27s;animation-delay:-12s"><svg viewBox="0 0 40 26"><path d="M0 13C8 0 30 0 40 13C30 26 8 26 0 13Z" fill="#f26b3a"/></svg></span><span class="lv" style="left:70%;animation-duration:30s;animation-delay:-16s"><svg viewBox="0 0 40 26"><path d="M0 13C8 0 30 0 40 13C30 26 8 26 0 13Z" fill="#7b9bd1"/></svg></span><span class="lv" style="left:85%;animation-duration:33s;animation-delay:-20s"><svg viewBox="0 0 40 26"><path d="M0 13C8 0 30 0 40 13C30 26 8 26 0 13Z" fill="#f9a8d8"/></svg></span><span class="ff" style="left:calc(50% + var(--bw)*-.34);animation-delay:0.0s"></span><span class="ff" style="left:calc(50% + var(--bw)*-.2);animation-delay:0.9s"></span><span class="ff" style="left:calc(50% + var(--bw)*-.08);animation-delay:1.8s"></span><span class="ff" style="left:calc(50% + var(--bw)*.05);animation-delay:2.7s"></span><span class="ff" style="left:calc(50% + var(--bw)*.17);animation-delay:3.6s"></span><span class="ff" style="left:calc(50% + var(--bw)*.3);animation-delay:4.5s"></span><span class="ff" style="left:calc(50% + var(--bw)*.38);animation-delay:5.4s"></span>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="branch" viewBox="0 0 200 200"><path d="M10 10C60 20 110 60 150 130" fill="none" stroke="#2e7d4f" stroke-width="3"/><defs><g id="lf"><path d="M0 0C8-13 30-13 40 0C30 13 8 13 0 0Z"/><path d="M2 0H34" stroke="#1b5e20" stroke-width="1" fill="none"/></g></defs><g fill="#43a047"><use href="#lf" transform="translate(10 10) rotate(-20) scale(.7)"/><use href="#lf" transform="translate(40 20) rotate(-25)"/><use href="#lf" transform="translate(69 36) rotate(0)"/><use href="#lf" transform="translate(98 60) rotate(15)"/><use href="#lf" transform="translate(125 92) rotate(40)"/></g><g fill="#66bb6a"><use href="#lf" transform="translate(40 20) rotate(65)"/><use href="#lf" transform="translate(69 36) rotate(95)"/><use href="#lf" transform="translate(98 60) rotate(110)"/><use href="#lf" transform="translate(125 92) rotate(130)"/></g><use href="#lf" fill="#8bc34a" transform="translate(150 130) rotate(70) scale(1.1)"/></symbol></svg>
+    <svg class="deco tl" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg>
+    <svg class="deco tr" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg>
+    <svg class="deco bl" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg>
+    <svg class="deco br" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg>
+    <svg class="books" viewBox="0 0 400 240" overflow="visible" aria-hidden="true"><defs><radialGradient id="gl1" cx="50%" cy="60%" r="50%"><stop offset="0" stop-color="#fff3b0" stop-opacity=".95"/><stop offset=".45" stop-color="#ffd54a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd54a" stop-opacity="0"/></radialGradient><linearGradient id="rayG" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff3b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff3b0" stop-opacity="0"/></linearGradient><linearGradient id="pgG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f1deA0"/><stop offset="1" stop-color="#fffaf0"/></linearGradient><path id="st" d="M0-11Q1.5-1.5 11 0Q1.5 1.5 0 11Q-1.5 1.5-11 0Q-1.5-1.5 0-11Z" fill="#f5a800"/><g id="pgL"><path d="M20 178C84 158 160 164 200 190V202C160 178 84 172 20 190Z" fill="#e8dcb4"/><path d="M24 183C86 163 160 169 198 195M28 188C88 168 160 174 198 199" fill="none" stroke="#c8b98a" stroke-width="1.2"/><g fill="url(#pgG)" stroke="#c9a227" stroke-width="1.2"><path d="M198 176C160 148 96 136 30 150C50 164 130 168 198 188Z"/><path d="M198 174C164 134 104 112 40 118C60 134 128 144 198 182Z"/><path d="M198 172C170 124 112 92 48 94C66 110 128 126 198 178Z"/></g></g></defs><ellipse class="gl" cx="200" cy="120" rx="190" ry="120" fill="url(#gl1)"/><g fill="url(#rayG)" opacity=".75"><path d="M200 172L95 8L140 0Z"/><path d="M200 172L165 -6L215 -6Z"/><path d="M200 172L260 0L305 8Z"/><path d="M200 172L135 -2L172 -8Z"/></g><path d="M14 176C80 152 160 160 200 186C240 160 320 152 386 176V196C320 174 240 180 200 206C160 180 80 174 14 196Z" fill="#0f5132"/><path d="M14 196C80 174 160 180 200 206C240 180 320 174 386 196V201C320 179 240 185 200 211C160 185 80 179 14 201Z" fill="#0a3322"/><use href="#pgL"/><use href="#pgL" transform="translate(400 0) scale(-1 1)"/><path d="M186 200C192 188 208 188 214 200Z" fill="#0a3322"/><circle class="gl" cx="90" cy="60" r="16" fill="#ffd54a" opacity=".28" style="animation-delay:0.0s"/><circle class="gl" cx="310" cy="70" r="20" fill="#ffd54a" opacity=".28" style="animation-delay:0.5s"/><circle class="gl" cx="240" cy="25" r="10" fill="#ffd54a" opacity=".28" style="animation-delay:1.0s"/><circle class="gl" cx="140" cy="30" r="12" fill="#ffd54a" opacity=".28" style="animation-delay:1.5s"/><circle class="gl" cx="350" cy="130" r="9" fill="#ffd54a" opacity=".28" style="animation-delay:2.0s"/><g transform="translate(120 60) scale(1.2)"><use href="#st" class="tw" style="animation-delay:0s"/></g><g transform="translate(280 50) scale(1)"><use href="#st" class="tw" style="animation-delay:0.6s"/></g><g transform="translate(200 20) scale(1.6)"><use href="#st" class="tw" style="animation-delay:0.3s"/></g><g transform="translate(160 95) scale(0.8)"><use href="#st" class="tw" style="animation-delay:1s"/></g><g transform="translate(250 100) scale(0.9)"><use href="#st" class="tw" style="animation-delay:1.4s"/></g><g transform="translate(70 110) scale(0.7)"><use href="#st" class="tw" style="animation-delay:0.8s"/></g><g transform="translate(335 105) scale(0.8)"><use href="#st" class="tw" style="animation-delay:0.2s"/></g><g transform="translate(205 75) scale(1)"><use href="#st" class="tw" style="animation-delay:1.8s"/></g><circle class="rs" cx="185" cy="130" r="2.5" fill="#f5a800" style="animation-delay:0.0s"/><circle class="rs" cx="215" cy="125" r="2.5" fill="#f5a800" style="animation-delay:0.6s"/><circle class="rs" cx="150" cy="140" r="2.5" fill="#f5a800" style="animation-delay:1.2s"/><circle class="rs" cx="250" cy="135" r="2.5" fill="#f5a800" style="animation-delay:1.8s"/><circle class="rs" cx="200" cy="110" r="2.5" fill="#f5a800" style="animation-delay:2.4s"/><circle class="rs" cx="230" cy="100" r="2.5" fill="#f5a800" style="animation-delay:3.0s"/></svg>
+    <div class="inside">
+      <h1><span class="t1">Detetives</span><span class="t2">da Cidadania</span><svg class="lens" viewBox="0 0 260 280" aria-hidden="true"><line x1="141" y1="102" x2="181" y2="135" stroke="#6b4f00" stroke-width="19" stroke-linecap="round"/><line x1="141" y1="102" x2="181" y2="135" stroke="#e8b93a" stroke-width="8" stroke-linecap="round"/><circle cx="100" cy="67" r="54" fill="rgba(255,255,255,.28)" stroke="#6b4f00" stroke-width="12"/><circle cx="100" cy="67" r="54" fill="none" stroke="#e8b93a" stroke-width="7"/><path d="M64 54A38 38 0 0 1 87 31" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round" opacity=".85"/></svg></h1>
+      <button id="go">Clique para começar ▶</button>
+    </div>
+  </section>
+  <section class="slide" id="s2">
+    <div class="frame"></div>
+    <svg class="deco tl" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg>
+    <svg class="deco tr" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg>
+    <svg id="bgS" viewBox="0 0 1000 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g id="th-forest" fill="#0f5132" opacity=".13"><path d="M15 110L-11 159H41ZM15 137L-21 200H51Z"/><path d="M83 73L57 142H109ZM83 111L47 200H119Z"/><path d="M151 86L125 148H177ZM151 120L115 200H187Z"/><path d="M219 99L193 154H245ZM219 129L183 200H255Z"/><path d="M287 62L261 137H313ZM287 103L251 200H323Z"/><path d="M355 75L329 143H381ZM355 112L319 200H391Z"/><path d="M423 88L397 149H449ZM423 121L387 200H459Z"/><path d="M491 101L465 155H517ZM491 130L455 200H527Z"/><path d="M559 64L533 138H585ZM559 104L523 200H595Z"/><path d="M627 77L601 144H653ZM627 113L591 200H663Z"/><path d="M695 90L669 150H721ZM695 123L659 200H731Z"/><path d="M763 103L737 156H789ZM763 132L727 200H799Z"/><path d="M831 66L805 139H857ZM831 106L795 200H867Z"/><path d="M899 79L873 145H925ZM899 115L863 200H935Z"/><path d="M967 92L941 151H993ZM967 124L931 200H1003Z"/></g><g id="th-house" fill="#8a5a3a" opacity=".14"><path d="M40 138h80v62h-80ZM32 138L80 96L128 138ZM96 104h12v22h-12Z"/><path d="M200 138h80v62h-80ZM192 138L240 96L288 138ZM256 104h12v22h-12Z"/><path d="M360 138h80v62h-80ZM352 138L400 96L448 138ZM416 104h12v22h-12Z"/><path d="M520 138h80v62h-80ZM512 138L560 96L608 138ZM576 104h12v22h-12Z"/><path d="M680 138h80v62h-80ZM672 138L720 96L768 138ZM736 104h12v22h-12Z"/><path d="M840 138h80v62h-80ZM832 138L880 96L928 138ZM896 104h12v22h-12Z"/></g><g id="th-castle" fill="#7a5a8a" opacity=".14"><path d="M300 200V110H700V200Z"/><path d="M340 200V70H410V200ZM590 200V70H660V200ZM465 200V30H535V200Z"/><path d="M335 70L375 14L415 70ZM585 70L625 14L665 70ZM460 30L500-30L540 30Z"/><path d="M300 110v-14h20v14h20v-14h20v14h20v-14h20v14ZM560 110v-14h20v14h20v-14h20v14h20v-14h20v14Z"/></g><g id="th-bean" opacity=".2"><path d="M500 210C430 170 580 140 490 100C420 70 560 40 500 -10" fill="none" stroke="#2e9a4f" stroke-width="16" stroke-linecap="round"/><g fill="#4caf50"><ellipse cx="450" cy="150" rx="40" ry="14" transform="rotate(-25 450 150)"/><ellipse cx="560" cy="118" rx="40" ry="14" transform="rotate(20 560 118)"/><ellipse cx="445" cy="78" rx="38" ry="13" transform="rotate(-20 445 78)"/><ellipse cx="552" cy="40" rx="36" ry="12" transform="rotate(18 552 40)"/></g><g fill="#7b9bd1" opacity=".7"><ellipse cx="170" cy="60" rx="70" ry="22"/><ellipse cx="210" cy="46" rx="44" ry="20"/><ellipse cx="820" cy="90" rx="80" ry="24"/><ellipse cx="860" cy="74" rx="46" ry="20"/></g></g></svg>
+    <div class="inner"><svg class="clip" viewBox="0 0 34 62" aria-hidden="true"><path d="M10 50V14a7 7 0 0 1 14 0v34a11 11 0 0 1-22 0V16" fill="none" stroke="#9aa3ad" stroke-width="3.2" stroke-linecap="round"/></svg><div class="stamp" id="qStamp"></div>
+      <h2 id="qTitle"><span id="qT"></span></h2>
+      <p class="desc" id="qDesc"></p>
+      <div class="opts">
+        <button class="opt"><span class="n">1</span><span></span></button>
+        <button class="opt"><span class="n">2</span><span></span></button>
+      </div>
+    </div>
+  </section>
+  <section id="res" aria-live="assertive">
+    <div class="frame"></div>
+    <svg class="deco tl" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg><svg class="deco tr" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg><svg class="deco bl" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg><svg class="deco br" viewBox="0 0 200 200" aria-hidden="true"><use href="#branch"/></svg>
+    <svg class="bunt" viewBox="0 0 1000 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6Q500 102 1000 6" fill="none" stroke="#8a6a40" stroke-width="2.5"/><path d="M9.0 7.3L41.0 7.3L25.0 38.3Z" fill="#f26b3a"/><path d="M57.7 11.6L89.7 11.6L73.7 42.6Z" fill="#f9b233"/><path d="M106.4 15.3L138.4 15.3L122.4 46.3Z" fill="#6dbb9b"/><path d="M155.1 18.6L187.1 18.6L171.1 49.6Z" fill="#f9a8d8"/><path d="M203.8 21.5L235.8 21.5L219.8 52.5Z" fill="#7b9bd1"/><path d="M252.5 23.9L284.5 23.9L268.5 54.9Z" fill="#f26b3a"/><path d="M301.2 25.8L333.2 25.8L317.2 56.8Z" fill="#f9b233"/><path d="M349.9 27.3L381.9 27.3L365.9 58.3Z" fill="#6dbb9b"/><path d="M398.6 28.3L430.6 28.3L414.6 59.3Z" fill="#f9a8d8"/><path d="M447.3 28.9L479.3 28.9L463.3 59.9Z" fill="#7b9bd1"/><path d="M496.0 29.0L528.0 29.0L512.0 60.0Z" fill="#f26b3a"/><path d="M544.7 28.6L576.7 28.6L560.7 59.6Z" fill="#f9b233"/><path d="M593.4 27.9L625.4 27.9L609.4 58.9Z" fill="#6dbb9b"/><path d="M642.1 26.6L674.1 26.6L658.1 57.6Z" fill="#f9a8d8"/><path d="M690.8 24.9L722.8 24.9L706.8 55.9Z" fill="#7b9bd1"/><path d="M739.5 22.7L771.5 22.7L755.5 53.7Z" fill="#f26b3a"/><path d="M788.2 20.1L820.2 20.1L804.2 51.1Z" fill="#f9b233"/><path d="M836.9 17.0L868.9 17.0L852.9 48.0Z" fill="#6dbb9b"/><path d="M885.6 13.5L917.6 13.5L901.6 44.5Z" fill="#f9a8d8"/><path d="M934.3 9.5L966.3 9.5L950.3 40.5Z" fill="#7b9bd1"/></svg><svg class="fpw" viewBox="0 0 300 40" fill="#7a3a2a" aria-hidden="true"><g transform="translate(14.0 12.0) rotate(90)" opacity="0.75"><ellipse rx="4.4" ry="7.5"/><ellipse cy="11" rx="3.4" ry="3.6"/></g><g transform="translate(50.0 28.0) rotate(90)" opacity="0.66"><ellipse rx="4.4" ry="7.5"/><ellipse cy="11" rx="3.4" ry="3.6"/></g><g transform="translate(86.0 12.0) rotate(90)" opacity="0.57"><ellipse rx="4.4" ry="7.5"/><ellipse cy="11" rx="3.4" ry="3.6"/></g><g transform="translate(122.0 28.0) rotate(90)" opacity="0.48"><ellipse rx="4.4" ry="7.5"/><ellipse cy="11" rx="3.4" ry="3.6"/></g><g transform="translate(158.0 12.0) rotate(90)" opacity="0.39"><ellipse rx="4.4" ry="7.5"/><ellipse cy="11" rx="3.4" ry="3.6"/></g><g transform="translate(194.0 28.0) rotate(90)" opacity="0.30"><ellipse rx="4.4" ry="7.5"/><ellipse cy="11" rx="3.4" ry="3.6"/></g><g transform="translate(230.0 12.0) rotate(90)" opacity="0.21"><ellipse rx="4.4" ry="7.5"/><ellipse cy="11" rx="3.4" ry="3.6"/></g><g transform="translate(266.0 28.0) rotate(90)" opacity="0.12"><ellipse rx="4.4" ry="7.5"/><ellipse cy="11" rx="3.4" ry="3.6"/></g></svg>
+    <div class="rcard">
+      <div class="big" id="rIcon"></div><div class="meds" id="rMed"></div>
+      <h3 id="rTitle"></h3>
+      <p class="sub" id="rSub"></p>
+      <p class="why" id="rWhy"></p><div class="meds" id="rPil"></div>
+      <button id="rBtn"></button><div class="stampR" id="stampR"></div>
+    </div>
+  </section>
+</div>
+<button id="skip" type="button" style="position:fixed;left:6px;bottom:6px;z-index:30;font:11px sans-serif;padding:3px 7px;opacity:.4;background:#fff;color:#333;border:1px solid #999;border-radius:6px;cursor:pointer">pular para o fim</button>
+<script>
+(function(){
+var Q=[
+{n:1,d:'“Deixamos restos de alimentos como migalhas de pães espalhados pela floresta, com a ideia de marcar o caminho de volta para casa, mas sem me preocupar em preservar a natureza. Quem somos nós e qual pilar cidadão nos faltou?”',c:0,o:[
+['João e Maria – Cuidado coletivo','João e Maria espalharam migalhas de pão pela floresta, sem considerar a preservação da natureza e os impactos de suas ações no ambiente.'],
+['Os sete anões – Responsabilidade','Os sete anões não estão envolvidos na situação apresentada, e a responsabilidade não é o pilar cidadão que melhor representa a atitude que faltou aos personagens.']]},
+{n:2,d:'“Entrei na casa de outras pessoas sem permissão, comi o mingau delas, quebrei uma cadeira, dormi em uma cama que não era minha, reclamei e fui embora sem pedir desculpas. Quem sou eu e qual pilar cidadão deixei de praticar?”',c:1,o:[
+['Alice no País das Maravilhas – Respeito','Alice não está envolvida na situação apresentada, pois sua história não envolve invadir a casa dos três ursos.'],
+['Cachinhos Dourados – Respeito','Cachinhos Dourados entrou na casa de outras pessoas sem permissão e desrespeitou seus pertences e seu espaço.']]},
+{n:3,d:'“Derrubei a casa dos meus vizinhos soprando forte, sem respeitar o espaço deles e sem tentar dialogar para resolver os problemas em conjunto. Quem sou eu e quais pilares faltaram?”',c:0,o:[
+['Lobo Mau – Cuidado coletivo e Cooperação','O Lobo Mau destruiu a casa dos vizinhos sem considerar os prejuízos causados a eles e à comunidade. Faltaram o cuidado coletivo, por não pensar no bem-estar dos outros, e a cooperação, por não buscar o diálogo e uma solução em conjunto.'],
+['Lobo Mau – Respeito e Cooperação','O respeito também é importante para a convivência, mas os pilares que melhor representam a situação são o cuidado coletivo e a cooperação, pois a atitude do Lobo Mau prejudicou o bem-estar dos vizinhos e demonstrou falta de consideração com a comunidade.']]},
+{n:4,d:'“Aceitei uma maçã e conselhos de uma desconhecida sem desconfiar, ignorando todos os avisos de segurança e colocando minha própria vida em risco. Quem sou eu e qual pilar me faltou?”',c:0,o:[
+['Branca de Neve – Responsabilidade','Branca de Neve aceitou algo de uma desconhecida sem tomar os devidos cuidados, colocando sua própria segurança em risco.'],
+['Chapeuzinho Vermelho – Responsabilidade','Chapeuzinho Vermelho também vive uma situação de perigo, mas não é a personagem envolvida na história da maçã envenenada.']]},
+{n:5,d:'“Invadi a propriedade de um gigante sem autorização e peguei pertences que não eram meus, em vez de conversar e negociar. Quem sou eu e quais pilares deixei de seguir?”',c:1,o:[
+['João e Maria – Cooperação e Cuidado coletivo','João e Maria não estão envolvidos na situação apresentada, pois sua história não envolve invadir a propriedade de um gigante.'],
+['João e o Pé de Feijão – Respeito e Responsabilidade','João invadiu a propriedade do gigante e pegou objetos que não lhe pertenciam, desrespeitando o espaço e os bens de outra pessoa.']]},
+{n:6,d:'“Fui embora às pressas de uma festa importante e deixei meu sapato perdido, sem assumir a responsabilidade nem avisar direito quem estava me ajudando. Quem sou eu e qual pilar faltou?”',c:0,o:[
+['Cinderela – Responsabilidade','Cinderela deixou o baile às pressas e perdeu seu sapato, sem comunicar sua saída, o que representa uma falta de responsabilidade.'],
+['Rapunzel – Responsabilidade','Rapunzel não é a personagem envolvida na situação, pois sua história não apresenta uma fuga de um baile com a perda de um sapato.']]},
+{n:7,d:'“Disfarcei-me de outra pessoa para enganar a vovó e conseguir entrar na casa dela sem permissão e com segundas intenções. Quem sou eu e quais pilares quebrei?”',c:1,o:[
+['O Gato de Botas – Respeito e Cooperação','O Gato de Botas utiliza disfarces e estratégias para alcançar seus objetivos, mas não é o personagem envolvido no episódio de enganar a vovó.'],
+['Lobo Mau – Respeito e Responsabilidade','O Lobo Mau enganou a vovó ao se disfarçar, desrespeitando sua confiança e agindo de forma irresponsável.']]},
+{n:8,d:'“Construí minha casa com pressa e de qualquer maneira, sem me importar com a segurança do lugar ou em ajudar os outros moradores da comunidade. Quem sou eu e quais pilares faltaram?”',c:0,o:[
+['Os Três Porquinhos – Cooperação e Cuidado coletivo','Os três porquinhos precisavam construir suas casas com responsabilidade, pensando na segurança e no bem-estar de todos.'],
+['Os Três Porquinhos – Responsabilidade e Cuidado coletivo','A responsabilidade também é importante na construção das casas, mas os pilares que melhor representam a situação são o cuidado coletivo e a cooperação, pois envolvem a segurança e o bem-estar da comunidade.']]},
+{n:9,d:'“Recebi a orientação de não mentir, mas, sempre que fazia algo errado, inventava histórias para fugir das consequências. Além disso, não cumpria minhas promessas e decepcionava quem confiava em mim. Quem sou eu e qual pilar cidadão deixei de praticar?”',c:0,o:[
+['Pinóquio – Responsabilidade','Pinóquio mentia e não assumia as consequências de suas atitudes, demonstrando falta de responsabilidade com suas escolhas e compromissos.'],
+['Peter Pan – Respeito','Peter Pan não está envolvido na situação apresentada, pois sua história não envolve mentiras e promessas não cumpridas como as atitudes de Pinóquio.']]},
+{n:10,d:'“Fui avisada para tomar cuidado com objetos desconhecidos, mas ignorei os alertas e aceitei tocar em uma roca de fiar, colocando minha própria segurança em risco. Quem sou eu e qual pilar cidadão deixei de praticar?”',c:0,o:[
+['Bela Adormecida – Responsabilidade','Bela Adormecida ignorou os avisos e não tomou os cuidados necessários para sua segurança, demonstrando falta de responsabilidade.'],
+['Patinho Feio – Respeito','O Patinho Feio não está envolvido na situação apresentada, pois sua história não envolve ignorar avisos de segurança ou colocar a própria vida em risco.']]}
+];
+var idx=0,score=0,missed=false,actx=null,order=[0,1];
+var s2=document.getElementById('s2'),res=document.getElementById('res'),btn=document.getElementById('rBtn'),
+    opts=[].slice.call(document.querySelectorAll('.opt')),$=function(i){return document.getElementById(i)};
+function gcol(t){var st=[[15,81,50],[31,138,138],[59,111,182],[138,79,176],[214,69,107],[232,116,45]],x=t*(st.length-1),i=Math.min(Math.floor(x),st.length-2),f=x-i,a=st[i],b=st[i+1];return 'rgb('+[0,1,2].map(function(k){return Math.round(a[k]+(b[k]-a[k])*f)}).join(',')+')'}
+var t1=document.querySelector('#s1 .t1'),pal=['#0f5132','#e8742a','#1f8a8a','#d6456b','#c9a227'];
+t1.innerHTML=t1.textContent.split('').map(function(c,i,a){return '<span class="ch" style="color:'+gcol(i/(a.length-1))+'">'+c+'</span>'}).join('');
+function load(){
+  var q=Q[idx]; missed=false; order=(q.c===[0,1,1,0,0,1,0,1,1,0][idx%10])?[0,1]:[1,0];var inn=document.querySelector('#s2 .inner');inn.classList.remove('pop');void inn.offsetWidth;inn.classList.add('pop');
+  $('qT').textContent='Enigma '+q.n;
+  $('qDesc').textContent=q.d;$('qStamp').textContent='CASO Nº '+q.n;$('bgS').setAttribute('data-t',['forest','house','house','forest','forest','house','forest','house','house','forest'][idx%10]);
+  opts.forEach(function(b,i){b.lastChild.textContent=q.o[order[i]][0];b.disabled=false;b.classList.remove('bad')});
+}
+function tone(f,t,d,type,v,to){
+  var o=actx.createOscillator(),g=actx.createGain(),n=actx.currentTime+t;
+  o.type=type;o.frequency.setValueAtTime(f,n);
+  if(to)o.frequency.exponentialRampToValueAtTime(to,n+d);
+  g.gain.setValueAtTime(0.0001,n);g.gain.exponentialRampToValueAtTime(v,n+0.02);g.gain.exponentialRampToValueAtTime(0.0001,n+d);
+  o.connect(g);g.connect(actx.destination);o.start(n);o.stop(n+d+0.05);
+}
+function sound(ok){
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==='suspended')actx.resume();
+    if(ok){[523.25,659.25,783.99,1046.5].forEach(function(f,i){tone(f,i*0.11,0.35,'triangle',0.25)});tone(1318.5,0.5,0.6,'sine',0.2)}
+    else{tone(392,0,0.3,'square',0.1);tone(370,0.32,0.3,'square',0.1);tone(349,0.64,0.3,'square',0.1);tone(330,0.96,0.9,'square',0.1,230)}
+  }catch(e){}
+}
+function confetti(){
+  var C=['#f26b3a','#f9b233','#6dbb9b','#f9a8d8','#7b9bd1'],
+  S=['<circle cx="8" cy="8" r="6" fill="K"/>','<path d="M8 1l2.2 4.6 5 .7-3.6 3.5.9 5L8 12.4 3.5 14.8l.9-5L.8 6.3l5-.7z" fill="K"/>','<rect x="2" y="4" width="12" height="8" rx="1.5" fill="K"/>','<path d="M1 12C3 1 7 15 9 4S13 11 15 3" fill="none" stroke="K" stroke-width="2.4" stroke-linecap="round"/>','<path d="M3 13C2 3 13 2 13 8S6 12 8 7" fill="none" stroke="K" stroke-width="2.4" stroke-linecap="round"/>'];
+  for(var i=0;i<60;i++){
+    var k=C[Math.floor(Math.random()*5)],w=14+Math.random()*14,s=document.createElement('span');
+    s.className='cf';
+    s.innerHTML='<svg viewBox="0 0 16 16" width="'+w+'" height="'+w+'">'+S[i%5].replace(/K/g,k)+'</svg>';
+    s.style.left=(Math.random()*100)+'%';
+    s.style.animationDuration=(2.4+Math.random()*2.4)+'s';
+    s.style.animationDelay=(0.4+Math.random()*1.4)+'s';
+    res.appendChild(s);setTimeout(function(el){el.remove()}.bind(null,s),7000);
+  }
+}
+var PM={'respeito':['🤝','Respeito'],'responsabilidade':['⚖️','Responsabilidade'],'cooperação':['🧩','Cooperação'],'cuidado coletivo':['🌱','Cuidado coletivo']};
+function pm(k){return '<div class="pl"><span class="pc">'+PM[k][0]+'</span><b>'+PM[k][1]+'</b></div>'}
+function medals(label){var part=(label.split('–')[1]||'').toLowerCase(),h='';Object.keys(PM).forEach(function(k){if(part.indexOf(k)>-1)h+=pm(k)});$('rMed').innerHTML=h}
+function finalExtras(){$('rPil').innerHTML=Object.keys(PM).map(pm).join('')}
+function show(cls,icon,title,sub,why,label,fn,from){
+  if(cls==='wrong')[].slice.call(res.querySelectorAll('.cf')).forEach(function(e){e.remove()});
+  if(from){var r=from.getBoundingClientRect();res.style.clipPath='circle(0 at '+(r.left+r.width/2)+'px '+(r.top+r.height/2)+'px)'}
+  res.className=cls;void res.offsetWidth;
+  $('rIcon').innerHTML=icon;$('rTitle').textContent=title;$('rSub').textContent=sub;$('rWhy').textContent=why;$('rMed').innerHTML='';$('rPil').innerHTML='';$('stampR').textContent=cls==='good'?'Caso resolvido':'Pista falsa';
+  btn.textContent=label;btn.onclick=fn;
+  res.classList.add('open');res.style.clipPath='';
+}
+function close(){res.classList.remove('open');[].slice.call(res.querySelectorAll('.cf')).forEach(function(e){e.remove()})}
+function final(){
+  sound(true);
+  show('final','<span class="ico bk">📖</span><span class="ico">🕵️</span>','Fim de jogo!','Vocês acertaram '+score+' de '+Q.length,
+    'Parabéns, detetives! Respeito, responsabilidade, cooperação e cuidado coletivo fazem de cada um de nós um cidadão melhor.',
+    'Jogar novamente',function(){idx=0;score=0;close();document.getElementById('s1').style.visibility='visible';t1.innerHTML=t1.innerHTML;s2.classList.remove('open');setTimeout(function(){s2.style.visibility='hidden'},1000)});
+  $('rTitle').innerHTML='Fim de jogo!'.split('').map(function(c,i,a){return '<span style="color:'+gcol(i/(a.length-1))+'">'+c+'</span>'}).join('');
+  confetti();
+}
+opts.forEach(function(b,i){
+  b.addEventListener('click',function(){
+    var q=Q[idx],j=order[i],ok=(j===q.c);sound(ok);
+    if(ok){
+      if(!missed)score++;
+      var last=idx===Q.length-1;
+      show('good','<svg class="tro" viewBox="0 0 240 260" aria-hidden="true"><use href="#trophy"/></svg>','Vocês acertaram!',q.o[j][0],q.o[j][1],last?'Ver resultado ▶':'Próximo enigma ▶',
+        function(){if(last){final()}else{idx++;load();close()}},b);
+      confetti();
+    }else{
+      missed=true;b.classList.add('bad');b.disabled=true;
+      show('wrong','<svg class="emo" viewBox="0 0 260 205" aria-hidden="true"><use href="#think"/></svg>','Ops, não foi dessa vez!',q.o[j][0],q.o[j][1],'Tentar de novo',close,b);
+    }
+  });
+});
+document.getElementById('skip').addEventListener('click',function(){if(!score)score=7;close();final()});
+$('go').addEventListener('click',function(e){
+  var r=e.currentTarget.getBoundingClientRect(),p='circle(0 at '+(r.left+r.width/2)+'px '+(r.top+r.height/2)+'px)';
+  load();s2.style.clipPath=p;s2.style.visibility='visible';void s2.offsetWidth;
+  s2.classList.add('open');s2.style.clipPath='';
+  setTimeout(function(){document.getElementById('s1').style.visibility='hidden'},1000);
+});
+})();
+</script>
+</body>
+</html>
